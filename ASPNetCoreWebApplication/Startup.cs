@@ -10,6 +10,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using ASPNetCoreWebApplication.Models;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ASPNetCoreWebApplication
 {
@@ -29,6 +31,21 @@ namespace ASPNetCoreWebApplication
 
             services.AddDbContext<RazorPagesMovieContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("RazorPagesMovieContext")));
+            
+            services.Configure<CookiePolicyOptions>( options => 
+            {
+                // This lambda determines whether user consent for non-essential cookies is 
+                // needed for a given request.
+                options.CheckConsentNeeded = content => true;
+                options.MinimumSameSitePolicy = SameSiteMode.None;
+            });
+
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddDbContext<RazorPagesMovieContext>(options =>
+            {
+                options.UseSqlServer(Configuration.GetConnectionString("RazorPagesMovieContext"));
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
